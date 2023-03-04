@@ -64,6 +64,48 @@ class Healer(Character):
     SPECIAL_SKILL = 'Защита' 
 
 
-warrior = Warrior('Кодослав')
-print(warrior)
-print(warrior.attack())
+def choice_char_class(char_name: str) -> Character:
+    """
+    Возвращает строку с выбранным
+    классом персонажа.
+    """
+    # Добавили словарь, в котором соотносится ввод пользователя и класс персонажа.
+    game_classes = {'warrior': Warrior, 'mage': Mage, 'healer': Healer}
+    
+    approve_choice: str  = None
+    
+    while approve_choice != 'y':
+        selected_class = input('Введи название персонажа, '
+                           'за которого хочешь играть: Воитель — warrior, '
+                           'Маг — mage, Лекарь — healer: ')
+        char_class: Character = game_classes[selected_class](char_name)
+        # Вывели в терминал описание персонажа.
+        print(char_class)
+        approve_choice = input('Нажми (Y), чтобы подтвердить выбор, '
+                               'или любую другую кнопку, '
+                               'чтобы выбрать другого персонажа ').lower()
+    return char_class 
+
+def start_training(character):
+    """
+    Принимает на вход имя и класс персонажа.
+    Возвращает сообщения о результатах цикла тренировки персонажа.
+    """
+    print('Потренируйся управлять своими навыками.')
+    print('Введи одну из команд: attack — чтобы атаковать противника, '
+          'defence — чтобы блокировать атаку противника или '
+          'special — чтобы использовать свою суперсилу.')
+    print('Если не хочешь тренироваться, введи команду skip.')
+    cmd = None
+    commands = {'attack': character.attack, 'defence': character.defence, 'special': character.special}
+    while cmd != 'skip':
+        cmd = input('Введи команду: ')
+        # Замените блок условных операторов на словарь
+        # и вынесите его из цикла. Здесь останется одно условие
+        # принадлежности введённой команды словарю.
+        # В функции print() будет вызываться метод класса,
+        # который соответствует введённой команде.
+        for command in commands:
+            if cmd == command:
+                print(commands[command])
+    return 'Тренировка окончена.'
